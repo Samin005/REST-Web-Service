@@ -1,10 +1,10 @@
 package com.samin005.restwebservice.model;
 
-public class HelloWorldBean {
+public class BasicAuthBean {
 
     private String message;
 
-    public HelloWorldBean(String message) {
+    public BasicAuthBean(String message) {
         this.message = message;
     }
 
