@@ -33,6 +33,9 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
     @Value("${jwt.http.request.header}")
     private String tokenHeader;
 
+    @Value("${jwt.get.token.uri}")
+    private String tokenURI;
+
     @Autowired
     public JwtTokenAuthorizationOncePerRequestFilter(UserDetailsService jwtUserDetailsService, JwtTokenUtil jwtTokenUtil) {
         this.jwtUserDetailsService = jwtUserDetailsService;
@@ -58,7 +61,11 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
                 logger.warn("JWT_TOKEN_EXPIRED", e);
             }
         } else {
-            logger.warn("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
+            if(request.getRequestURI().equals(tokenURI)){
+                logger.info("REQUESTING_FOR_JWT_TOKEN");
+            } else {
+                logger.warn("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
+            }
         }
 
         logger.debug("JWT_TOKEN_USERNAME_VALUE '{}'", username);
